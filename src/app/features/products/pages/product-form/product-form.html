@@ -1,0 +1,82 @@
+<section class="page">
+  <header class="page__head">
+    <div>
+      <h1>{{ isEdit() ? 'Editar producto' : 'Nuevo producto' }}</h1>
+      <p class="muted">Completa los datos. La fecha de revisión se calcula +1 año.</p>
+    </div>
+  </header>
+
+  @let loading = this.loading();
+
+  @if (loading) {
+    <app-skeleton [rows]="5"></app-skeleton>
+  } @else {
+    <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="grid">
+        <label class="field">
+          <span>ID</span>
+          <input class="input" formControlName="id" [class.invalid]="fieldError('id')" />
+          @if (fieldError('id')) {
+            <small class="err">{{ fieldError('id') }}</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Nombre</span>
+          <input class="input" formControlName="name" [class.invalid]="fieldError('name')" />
+          @if (fieldError('name')) {
+            <small class="err">{{ fieldError('name') }}</small>
+          }
+        </label>
+
+        <label class="field full">
+          <span>Descripción</span>
+          <textarea
+            class="input"
+            rows="4"
+            formControlName="description"
+            [class.invalid]="fieldError('description')"
+          ></textarea>
+          @if (fieldError('description')) {
+            <small class="err">{{ fieldError('description') }}</small>
+          }
+        </label>
+
+        <label class="field full">
+          <span>Logo (URL)</span>
+          <input class="input" formControlName="logo" [class.invalid]="fieldError('logo')" />
+          @if (fieldError('logo')) {
+            <small class="err">{{ fieldError('logo') }}</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Fecha de lanzamiento</span>
+          <input
+            class="input"
+            type="date"
+            [min]="todayMin"
+            formControlName="dateRelease"
+            [class.invalid]="fieldError('dateRelease')"
+          />
+          @if (fieldError('dateRelease')) {
+            <small class="err">{{ fieldError('dateRelease') }}</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Fecha de revisión</span>
+          <input class="input" type="date" formControlName="dateRevision" />
+        </label>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="button" (click)="cancel()">Cancelar</button>
+        <button class="btn danger" type="button" (click)="resetForm()">Limpiar formulario</button>
+        <button class="btn primary" type="submit">
+          {{ isEdit() ? 'Guardar' : 'Crear' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

@@ -1,0 +1,112 @@
+<section class="page">
+  <header class="page__head">
+    <div>
+      <h1>Productos</h1>
+      <p class="muted">Gestiona el catálogo con endpoints /products</p>
+    </div>
+    <button class="btn primary" type="button" (click)="create.emit()">Nuevo producto</button>
+  </header>
+
+  <div class="toolbar">
+    <input
+      class="input"
+      type="search"
+      placeholder="Buscar por id, nombre o descripción"
+      [value]="vm.query"
+      (input)="onSearchInput($any($event.target).value)"
+    />
+  </div>
+
+  @if (vm.loading) {
+    <app-skeleton [rows]="6"></app-skeleton>
+  } @else {
+    <div class="subbar">
+      <div class="muted">
+        Mostrando <strong>{{ vm.from }}</strong
+        >–<strong>{{ vm.to }}</strong> de <strong>{{ vm.total }}</strong> productos
+      </div>
+
+      <div class="subbar__right">
+        <label class="subbar__label">
+          <span class="muted">Por página</span>
+          <select
+            class="select"
+            [value]="vm.pageSize"
+            (change)="onPageSizeSelect($any($event.target).value)"
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </label>
+
+        <div class="pager">
+          <button
+            class="btn"
+            type="button"
+            (click)="prevPage.emit()"
+            [disabled]="vm.currentPage === 1"
+          >
+            Anterior
+          </button>
+          <span class="muted">Página {{ vm.currentPage }} de {{ vm.totalPages }}</span>
+          <button
+            class="btn"
+            type="button"
+            (click)="nextPage.emit()"
+            [disabled]="vm.currentPage === vm.totalPages"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table">
+      <div class="table__row table__head">
+        <div>Logo</div>
+        <div>ID</div>
+        <div>Nombre</div>
+        <div>Descripción</div>
+        <div>Lanzamiento</div>
+        <div>Revisión</div>
+        <div>Acciones</div>
+      </div>
+
+      @for (p of vm.products; track p.id) {
+        <div class="table__row">
+          <div><img class="logo" [src]="p.logo" alt="logo" /></div>
+          <div class="mono">{{ p.id }}</div>
+          <div>{{ p.name }}</div>
+          <div class="muted clamp">{{ p.description }}</div>
+          <div>{{ p.dateRelease | date: 'yyyy-MM-dd' }}</div>
+          <div>{{ p.dateRevision | date: 'yyyy-MM-dd' }}</div>
+
+          <app-product-row-actions
+            [productId]="p.id"
+            (edit)="edit.emit($event)"
+            (remove)="delete.emit($event)"
+          ></app-product-row-actions>
+        </div>
+      }
+
+      @if (vm.total === 0) {
+        <div class="empty">No hay productos para mostrar.</div>
+      }
+    </div>
+  }
+</section>
+
+<app-confirm-modal
+  [open]="confirmOpen"
+  title="Eliminar producto"
+  [message]="
+    '¿Deseas eliminar el producto “' + pendingDeleteName + '”? Esta acción no se puede deshacer.'
+  "
+  confirmText="Eliminar"
+  cancelText="Cancelar"
+  [danger]="true"
+  [busy]="deleting"
+  (confirm)="confirmDelete.emit()"
+  (cancelO)="cancelConfirm.emit()"
+></app-confirm-modal>

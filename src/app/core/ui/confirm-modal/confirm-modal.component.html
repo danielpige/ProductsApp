@@ -1,0 +1,50 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+@if (open) {
+  <div class="modal" role="presentation" (click)="onBackdropClick()">
+    <div
+      class="modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="title"
+      (click)="stop($event)"
+      tabindex="-1"
+    >
+      <header class="modal__head">
+        <h2 class="modal__title">{{ title }}</h2>
+        <button
+          class="modal__close"
+          type="button"
+          (click)="onCancelClick()"
+          [disabled]="busy"
+          aria-label="Cerrar"
+        >
+          ×
+        </button>
+      </header>
+
+      <div class="modal__body">
+        <p class="muted">{{ message }}</p>
+      </div>
+
+      <footer class="modal__actions">
+        <button class="btn" type="button" (click)="onCancelClick()" [disabled]="busy">
+          {{ cancelText }}
+        </button>
+
+        <button
+          class="btn"
+          [class.danger]="danger"
+          type="button"
+          (click)="onConfirmClick()"
+          [disabled]="busy"
+        >
+          @if (busy) {
+            Eliminando...
+          } @else {
+            {{ confirmText }}
+          }
+        </button>
+      </footer>
+    </div>
+  </div>
+}

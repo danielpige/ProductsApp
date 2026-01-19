@@ -1,0 +1,23 @@
+<div class="actions" (click)="stop($event)">
+  <button
+    class="icon-btn"
+    type="button"
+    aria-label="Abrir menú"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="open()"
+    (click)="toggle($event)"
+  >
+    ⋮
+  </button>
+
+  @if (open()) {
+    <div class="menu" role="menu" (click)="stop($event)">
+      <button class="menu__item" type="button" role="menuitem" (click)="onEdit($event)">
+        Editar
+      </button>
+      <button class="menu__item danger" type="button" role="menuitem" (click)="onRemove($event)">
+        Eliminar
+      </button>
+    </div>
+  }
+</div>

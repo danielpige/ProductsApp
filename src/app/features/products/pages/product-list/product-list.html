@@ -1,0 +1,15 @@
+<app-product-list-view
+  [vm]="vm()"
+  [confirmOpen]="confirmOpen()"
+  [pendingDeleteName]="pendingDeleteName()"
+  [deleting]="deleting()"
+  (create)="onCreate()"
+  (searchO)="onSearch($event)"
+  (pageSizeChange)="onPageSizeChange($event)"
+  (prevPage)="prevPage()"
+  (nextPage)="nextPage()"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)"
+  (confirmDelete)="confirmDelete()"
+  (cancelConfirm)="closeConfirm()"
+/>

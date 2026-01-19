@@ -1,11 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
+  styleUrl: './app.scss',
+  // eslint-disable-next-line @angular-eslint/prefer-standalone
   standalone: false,
-  styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('ProductsApp');
-}
+export class App {}
